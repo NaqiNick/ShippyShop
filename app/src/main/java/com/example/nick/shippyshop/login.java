@@ -35,7 +35,7 @@ public class login extends Activity {
     AlertDialog.Builder builder;
 
 
-    private static final String register_url ="http://192.168.10.6/shippyshop_server/login.php";
+    private static final String register_url ="http://192.168.1.7/shippyshop_server/login.php";
     private static final String KEY_EMAIL = "user_email";
     private static final String KEY_PASSWORD = "user_password";
 
