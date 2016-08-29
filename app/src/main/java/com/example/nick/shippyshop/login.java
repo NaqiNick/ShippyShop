@@ -32,10 +32,9 @@ public class login extends Activity {
     private Button bt_Signin;
     private EditText et_Email, et_Password;
     private TextView tv_Forgot, tv_Register;
-    AlertDialog.Builder builder;
 
 
-    private static final String register_url ="http://192.168.1.7/shippyshop_server/login.php";
+    private static final String register_url ="http://192.168.1.5/shippyshop_server/login.php";
     private static final String KEY_EMAIL = "user_email";
     private static final String KEY_PASSWORD = "user_password";
 
@@ -51,6 +50,7 @@ public class login extends Activity {
     protected void init(){
 
         localUser = new UserLocal(this);
+        localUser.setUserLoggedIn(false);
 
         bt_Signin = (Button)findViewById(R.id.btn_signIn);
 
@@ -96,7 +96,7 @@ public class login extends Activity {
                     JSONObject jsonObject = jsonArray.getJSONObject(0);
                     String code = jsonObject.getString("message");
                     if(code.equals("No data")){
-                        Toast.makeText(login.this, "Login Failed Try Again\nInvalid User Name and Password", Toast.LENGTH_LONG).show();
+                        Toast.makeText(login.this, "Login Failed Try Again\nInvalid User Name or Password", Toast.LENGTH_LONG).show();
                     }else if (code.equals("login success")){
                         //Toast.makeText(login.this, "Logged In", Toast.LENGTH_LONG).show();
                                 user.user_Name=jsonObject.getString("user_name");
@@ -105,9 +105,10 @@ public class login extends Activity {
                                 user.phone=jsonObject.getString("user_phone");
                                 user.addr=jsonObject.getString("user_address");
                                 user.user_type=jsonObject.getInt("user_type");
-                        localUser.setUserLoggedIn(true);
-                        localUser.setUserLoggedIn(true);
                         localUser.storeUserDetails(user);
+                        localUser.setUserLoggedIn(true);
+                        //User user_new = localUser.getLoggedinUser();
+                        //Toast.makeText(login.this, "user\n"+user_new.user_Name+user_new.email+user_new.password+user_new.phone+user.addr+String.valueOf(user_new.user_type)+localUser.getUserLoggedIn(), Toast.LENGTH_SHORT).show();
                     }else{
                         Toast.makeText(login.this, "unknown error", Toast.LENGTH_SHORT).show();
                     }

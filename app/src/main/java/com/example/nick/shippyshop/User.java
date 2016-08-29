@@ -17,6 +17,14 @@ public class User {
         this.addr = addr;
         this.user_type = type;
     }
+    public User (User user){
+        this.user_Name = user.user_Name;
+        this.email =user.email;
+        this.password = user.password;
+        this.phone = user.phone;
+        this.addr = user.addr;
+        this.user_type = user.user_type;
+    }
 
     public User (String email, String password){
 

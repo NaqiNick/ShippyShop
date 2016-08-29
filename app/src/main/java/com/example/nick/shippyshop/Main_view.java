@@ -10,7 +10,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.Window;
+import android.widget.TextView;
 import android.widget.ViewFlipper;
 
 import com.google.android.gms.appindexing.Action;
@@ -25,7 +27,9 @@ public class Main_view extends AppCompatActivity
      * See https://g.co/AppIndexing/A ndroidStudio for more information.
      */
     private GoogleApiClient client;
-
+    public UserLocal localUser;
+    private TextView tv_username;
+    private User user;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,21 +38,31 @@ public class Main_view extends AppCompatActivity
         setSupportActionBar(toolbar);
 
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
-        toggle.syncState();
+        localUser = new UserLocal(this);
+        user = localUser.getLoggedinUser();
+        if(localUser.getUserLoggedIn()) {
+            DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+            ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                    this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+            drawer.setDrawerListener(toggle);
+            toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
-        viewFlipper = (ViewFlipper) this.findViewById(R.id.vFlipper1);
+            NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+            navigationView.setNavigationItemSelectedListener(this);
+            View header_view = navigationView.getHeaderView(0);
+            tv_username = (TextView) header_view.findViewById(R.id.tv_user_Name);
+            tv_username.setText(user.user_Name);
+            viewFlipper = (ViewFlipper) this.findViewById(R.id.vFlipper1);
 
-        viewFlipper.startFlipping();
-        viewFlipper.setFlipInterval(2000);
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-        client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
+            viewFlipper.startFlipping();
+            viewFlipper.setFlipInterval(2000);
+            // ATTENTION: This was auto-generated to implement the App Indexing API.
+            // See https://g.co/AppIndexing/AndroidStudio for more information.
+            client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
+
+        }else{
+            finish();
+        }
     }
 
     @Override
@@ -95,9 +109,10 @@ public class Main_view extends AppCompatActivity
 
         } else if (id == R.id.nav_Settings) {
 
-        }
-        {
-
+        }else if (id == R.id.nav_logout){
+            localUser.setUserLoggedIn(false);
+            localUser.clearUserdata();
+            finish();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

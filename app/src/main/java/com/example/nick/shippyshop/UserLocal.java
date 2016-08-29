@@ -13,7 +13,7 @@ public class UserLocal {
 
     public UserLocal(Context context){
 
-        localDatabase =context.getSharedPreferences(sp_name, 0);
+        localDatabase =context.getSharedPreferences(sp_name, context.MODE_PRIVATE);
     }
 
     public void storeUserDetails(User user){
@@ -26,6 +26,7 @@ public class UserLocal {
         spEditor.putString("phone",user.getPhone());
         spEditor.putString("address",user.getAddr());
         spEditor.putInt("type", user.user_type);
+        spEditor.commit();
     }
 
     public User getLoggedinUser (){
@@ -49,12 +50,7 @@ public class UserLocal {
     }
 
     public boolean getUserLoggedIn (){
-        if(localDatabase.getBoolean("loggedIn",false)== true) {
-            return true;
-        }else
-        {
-            return false;
-        }
+        return localDatabase.getBoolean("loggedIn",false);
     }
 
     public void clearUserdata(){
