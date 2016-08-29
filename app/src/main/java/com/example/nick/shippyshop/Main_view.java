@@ -8,11 +8,14 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
+import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ViewFlipper;
 
 import com.google.android.gms.appindexing.Action;
@@ -30,6 +33,7 @@ public class Main_view extends AppCompatActivity
     public UserLocal localUser;
     private TextView tv_username;
     private User user;
+    private ListView mDrawerList;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,6 +46,7 @@ public class Main_view extends AppCompatActivity
         user = localUser.getLoggedinUser();
         if(localUser.getUserLoggedIn()) {
             DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+            //mDrawerList = (ListView) findViewById(R.id.);
             ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                     this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
             drawer.setDrawerListener(toggle);
@@ -53,14 +58,22 @@ public class Main_view extends AppCompatActivity
             tv_username = (TextView) header_view.findViewById(R.id.tv_user_Name);
             tv_username.setText(user.user_Name);
             viewFlipper = (ViewFlipper) this.findViewById(R.id.vFlipper1);
-
             viewFlipper.startFlipping();
             viewFlipper.setFlipInterval(2000);
+            if (user.user_type==1) {
+                navigationView.inflateMenu(R.menu.activity_main_view_drawer_seller);
+            }else if (user.user_type==2){
+                navigationView.inflateMenu(R.menu.activity_main_view_drawer_buyer);
+            }else{
+                Toast.makeText(Main_view.this, "An internal Error has occured!", Toast.LENGTH_LONG).show();
+                finish();
+            }
             // ATTENTION: This was auto-generated to implement the App Indexing API.
             // See https://g.co/AppIndexing/AndroidStudio for more information.
             client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
 
         }else{
+            Toast.makeText(Main_view.this, "An internal Error has occured!", Toast.LENGTH_LONG).show();
             finish();
         }
     }

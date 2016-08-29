@@ -4,33 +4,33 @@
     <group android:checkableBehavior="single">
 
 
-
+        <item
+            android:id="@+id/nav_User"
+            android:icon="@drawable/usericon"
+            android:title="User" />
         <item
             android:id="@+id/nav_Chat"
             android:icon="@drawable/newmess"
             android:title="Messages" />
-    </group>
 
 
-            <item
-                android:id="@+id/nav_User"
-                android:icon="@drawable/usericon"
-                android:title="User" />
+
+
+        <item
+            android:id="@+id/view_cart"
+            android:icon="@drawable/cart_icon"
+            android:title="View Cart"/>
             <item
                 android:id="@+id/nav_Settings"
                 android:icon="@drawable/settingsicon"
                 android:title="Settings" />
-    <item
-        android:id="@+id/nav_shop"
-        android:icon="@drawable/newshop"
-        android:title="Shop"/>
 
-    <item
-        android:id="@+id/nav_logout"
-        android:icon="@drawable/logout"
-        android:title="Logout"/>
-
-        </menu>
+             <item
+                android:id="@+id/nav_logout"
+                android:icon="@drawable/logout"
+                android:title="Logout"/>
+    </group>
+</menu>
 
 
 
