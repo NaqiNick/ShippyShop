@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:weightSum="1">
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Change User Name"
+        android:id="@+id/button"
+        android:background="#ffffff"
+        android:textSize="15dp"
+        android:textAlignment="textStart"
+        android:layout_weight="0.04" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Notifications"
+        android:id="@+id/button2"
+        android:textAlignment="textStart"
+        android:background="#ffffff"
+        android:layout_weight="0.04" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Change picture"
+        android:id="@+id/button3"
+        android:layout_weight="0.04"
+        android:background="#ffffff"
+        android:textAlignment="textStart" />
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:weightSum="1">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Current Version"
+            android:id="@+id/textView2"
+            android:layout_weight="0.08"
+            android:textSize="18dp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="1.0.0"
+            android:id="@+id/textView3"
+            android:textSize="18dp" />
+    </LinearLayout>
+</LinearLayout>

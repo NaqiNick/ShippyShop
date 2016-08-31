@@ -1,5 +1,6 @@
 package com.example.nick.shippyshop;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -121,8 +122,13 @@ public class Main_view extends AppCompatActivity
         } else if (id == R.id.nav_User) {
 
         } else if (id == R.id.nav_Settings) {
-
-        }else if (id == R.id.nav_logout){
+            Intent setting_act = new Intent(Main_view.this,Settings.class);
+            startActivity(setting_act);
+        }else if (id==R.id.nav_shop){
+            Intent shop_act = new Intent(Main_view.this,shop.class);
+            startActivity(shop_act);
+        }
+        else if (id == R.id.nav_logout){
             localUser.setUserLoggedIn(false);
             localUser.clearUserdata();
             finish();

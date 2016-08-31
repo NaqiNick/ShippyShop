@@ -34,7 +34,7 @@ public class login extends Activity {
     private TextView tv_Forgot, tv_Register;
 
 
-    private static final String register_url ="http://192.168.1.5/shippyshop_server/login.php";
+    private static final String register_url ="http://192.168.10.5/shippyshop_server/login.php";
     private static final String KEY_EMAIL = "user_email";
     private static final String KEY_PASSWORD = "user_password";
 
