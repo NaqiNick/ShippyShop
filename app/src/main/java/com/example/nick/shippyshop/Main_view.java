@@ -9,11 +9,9 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -120,7 +118,8 @@ public class Main_view extends AppCompatActivity
         if (id == R.id.nav_Chat) {
 
         } else if (id == R.id.nav_User) {
-
+            Intent profile_act = new Intent(Main_view.this, Profile_user.class);
+            startActivity(profile_act);
         } else if (id == R.id.nav_Settings) {
             Intent setting_act = new Intent(Main_view.this,Settings.class);
             startActivity(setting_act);
