@@ -4,6 +4,13 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
 
+    <uses-feature
+        android:name="android.hardware.camera2"
+        android:required="true" />
+
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
     <application
         android:allowBackup="true"
         android:icon="@drawable/app_logo"
@@ -17,15 +24,15 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".register"></activity>
-        <activity android:name=".forgot_password"></activity>
-        <activity android:name=".logout"></activity>
+        <activity android:name=".register" />
+        <activity android:name=".forgot_password" />
+        <activity android:name=".logout" />
         <activity
             android:name=".Main_view"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
-        <activity android:name=".Settings"></activity>
-        <activity android:name=".shop"></activity>
-        <activity android:name=".Profile_user"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".Settings" />
+        <activity android:name=".shop" />
+        <activity android:name=".Profile_user" />
         <!--
         <activity
             android:name=".MainActivity"
@@ -38,6 +45,7 @@
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
 
+        <activity android:name=".Add_product"></activity>
     </application>
 
 </manifest>

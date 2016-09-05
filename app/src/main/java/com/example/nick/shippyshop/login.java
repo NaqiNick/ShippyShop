@@ -33,7 +33,7 @@ public class login extends Activity {
     private EditText et_Email, et_Password;
     private TextView tv_Forgot, tv_Register;
 
-    private static final String register_url ="http://192.168.1.3/shippyshop_server/login.php";
+    private static final String register_url ="http://192.168.1.2/shippyshop_server/login.php";
     private static final String KEY_EMAIL = "user_email";
     private static final String KEY_PASSWORD = "user_password";
 
@@ -42,7 +42,6 @@ public class login extends Activity {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_login);
-
         init();
     }
 
@@ -75,8 +74,6 @@ public class login extends Activity {
     public void login_Function_reg(View v){
         User userLogin = new User(et_Email.getText().toString(), et_Password.getText().toString());
         logUser_in(userLogin);
-        //et_Password.setText("");
-        //et_Email.setText("");
         if(localUser.getUserLoggedIn()){
             Intent main_activ = new Intent(login.this,Main_view.class);
             startActivity(main_activ);
@@ -97,22 +94,26 @@ public class login extends Activity {
                     if(code.equals("No data")){
                         Toast.makeText(login.this, "Login Failed Try Again\nInvalid User Name or Password", Toast.LENGTH_LONG).show();
                     }else if (code.equals("login success")){
-                        //Toast.makeText(login.this, "Logged In", Toast.LENGTH_LONG).show();
+                                user.user_id=jsonObject.getString("user_id");
                                 user.user_Name=jsonObject.getString("user_name");
                                 user.email=jsonObject.getString("user_email");
                                 user.password=jsonObject.getString("user_password");
                                 user.phone=jsonObject.getString("user_phone");
                                 user.addr=jsonObject.getString("user_address");
                                 user.user_type=jsonObject.getInt("user_type");
+                                String pic = jsonObject.getString("user_pic");
+                        if (pic.equals("1")){
+                            user.user_Pic=true;
+                        }else{
+                            user.user_Pic=false;
+                        }
                         localUser.storeUserDetails(user);
                         localUser.setUserLoggedIn(true);
-                        //User user_new = localUser.getLoggedinUser();
-                        //Toast.makeText(login.this, "user\n"+user_new.user_Name+user_new.email+user_new.password+user_new.phone+user.addr+String.valueOf(user_new.user_type)+localUser.getUserLoggedIn(), Toast.LENGTH_SHORT).show();
+                        User user_new = localUser.getLoggedinUser();
                     }else{
                         Toast.makeText(login.this, "unknown error", Toast.LENGTH_SHORT).show();
                     }
-                  //  et_Email.setText("");
-                  //  et_Password.setText("");
+
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }

@@ -1,6 +1,9 @@
 package com.example.nick.shippyshop;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -9,6 +12,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Base64;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -17,9 +21,33 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+//import com.android.volley.toolbox.ImageLoader;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.kosalgeek.android.photoutil.MainActivity;
+
+import com.kosalgeek.android.photoutil.CameraPhoto;
+import com.kosalgeek.android.photoutil.GalleryPhoto;
+import com.kosalgeek.android.photoutil.ImageBase64;
+import com.kosalgeek.android.photoutil.ImageLoader;
+
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class Main_view extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -33,6 +61,9 @@ public class Main_view extends AppCompatActivity
     private TextView tv_username;
     private User user;
     private ListView mDrawerList;
+    private CircleImageView iv_nav_pic;
+    private static final String KEY_ID = "id";
+    public static final String get_image_url="http://192.168.1.2/shippyshop_server/get_pic.php" ;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,7 +76,6 @@ public class Main_view extends AppCompatActivity
         user = localUser.getLoggedinUser();
         if(localUser.getUserLoggedIn()) {
             DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-            //mDrawerList = (ListView) findViewById(R.id.);
             ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                     this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
             drawer.setDrawerListener(toggle);
@@ -56,12 +86,16 @@ public class Main_view extends AppCompatActivity
             View header_view = navigationView.getHeaderView(0);
             tv_username = (TextView) header_view.findViewById(R.id.tv_user_Name);
             tv_username.setText(user.user_Name);
+            iv_nav_pic = (CircleImageView) header_view.findViewById(R.id.iv_nav_profile);
+                if (user.user_Pic){
+                    getProfilePic(user.user_id);
+                }
             viewFlipper = (ViewFlipper) this.findViewById(R.id.vFlipper1);
             viewFlipper.startFlipping();
             viewFlipper.setFlipInterval(2000);
-            if (user.user_type==1) {
+            if (user.user_type==2) {
                 navigationView.inflateMenu(R.menu.activity_main_view_drawer_seller);
-            }else if (user.user_type==2){
+            }else if (user.user_type==1){
                 navigationView.inflateMenu(R.menu.activity_main_view_drawer_buyer);
             }else{
                 Toast.makeText(Main_view.this, "An internal Error has occured!", Toast.LENGTH_LONG).show();
@@ -118,8 +152,8 @@ public class Main_view extends AppCompatActivity
         if (id == R.id.nav_Chat) {
 
         } else if (id == R.id.nav_User) {
-            Intent profile_act = new Intent(Main_view.this, Profile_user.class);
-            startActivity(profile_act);
+            Intent user_act = new Intent(this, Profile_user.class);
+            startActivity(user_act);
         } else if (id == R.id.nav_Settings) {
             Intent setting_act = new Intent(Main_view.this,Settings.class);
             startActivity(setting_act);
@@ -176,5 +210,48 @@ public class Main_view extends AppCompatActivity
         );
         AppIndex.AppIndexApi.end(client, viewAction);
         client.disconnect();
+    }
+    public void getProfilePic(String id){
+        Toast.makeText(Main_view.this, "getting picture"+id, Toast.LENGTH_SHORT).show();
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, get_image_url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONArray jsonArray = new JSONArray(response);
+                    JSONObject jsonObject = jsonArray.getJSONObject(0);
+                    String code = jsonObject.getString("message");
+                    if(code.equals("cannot read file")){
+                        Toast.makeText(Main_view.this, code, Toast.LENGTH_SHORT).show();
+                    }else if(code.equals("file read success")){
+                        String pic =jsonObject.getString("image");
+                        byte[] decodedString = Base64.decode(pic, Base64.DEFAULT);
+                        Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+
+                        localUser.add_profile_pic(pic);
+                        iv_nav_pic.setImageBitmap(decodedByte);
+                    }else if (code.equals("failed getting data from app")){
+                        Toast.makeText(Main_view.this, "failed getting data from app", Toast.LENGTH_SHORT).show();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(Main_view.this, error.toString()+"\n please check your internet connection", Toast.LENGTH_LONG).show();
+                    }
+                }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> map = new HashMap<String, String>();
+                map.put(KEY_ID, user.user_id);
+                return map;
+            }
+        };
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        requestQueue.add(stringRequest);
     }
 }

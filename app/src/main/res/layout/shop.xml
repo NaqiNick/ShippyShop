@@ -14,7 +14,8 @@
         android:id="@+id/button4"
         android:textAlignment="center"
         android:background="#e21010"
-        android:textColor="#ffffff" />
+        android:textColor="#ffffff"
+        android:onClick="add_Products" />
 
     <LinearLayout
         android:orientation="horizontal"
