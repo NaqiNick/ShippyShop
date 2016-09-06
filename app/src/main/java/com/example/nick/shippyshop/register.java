@@ -32,7 +32,7 @@ public class register extends Activity{
     private static final String KEY_TYPE = "user_type";
 
 
-    private static final String register_url ="http://192.168.1.2/shippyshop_server/register.php";
+    private static final String register_url ="http://192.168.1.5/shippyshop_server/register.php";
     private int type;
     private Button btn_Register;
     private EditText et_Fname, et_Sname, et_Pass, et_Email, et_Repass, et_Phone, et_Address;

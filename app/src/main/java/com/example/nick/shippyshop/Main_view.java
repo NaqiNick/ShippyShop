@@ -63,7 +63,7 @@ public class Main_view extends AppCompatActivity
     private ListView mDrawerList;
     private CircleImageView iv_nav_pic;
     private static final String KEY_ID = "id";
-    public static final String get_image_url="http://192.168.1.2/shippyshop_server/get_pic.php" ;
+    public static final String get_image_url="http://192.168.1.5/shippyshop_server/get_pic.php" ;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -253,5 +253,17 @@ public class Main_view extends AppCompatActivity
         };
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         requestQueue.add(stringRequest);
+    }
+
+    @Override
+    public void onResume(){
+        Toast.makeText(Main_view.this, "onResume", Toast.LENGTH_SHORT).show();
+        if(user.user_Pic){
+            Toast.makeText(Main_view.this, "getting image", Toast.LENGTH_SHORT).show();
+            byte[] decodedString = Base64.decode(localUser.get_profile_pic(), Base64.DEFAULT);
+            Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+            iv_nav_pic.setImageBitmap(decodedByte);
+        }
+        super.onResume();
     }
 }

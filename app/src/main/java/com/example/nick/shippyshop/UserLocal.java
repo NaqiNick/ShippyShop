@@ -33,6 +33,12 @@ public class UserLocal {
         spEditor.commit();
     }
 
+    public void update_pic(Boolean pic){
+        SharedPreferences.Editor spEditor = localDatabase.edit();
+        spEditor.putBoolean("user_pic", pic);
+        spEditor.commit();
+    }
+
     public User getLoggedinUser (){
 
         String user_id = localDatabase.getString("userid", "");

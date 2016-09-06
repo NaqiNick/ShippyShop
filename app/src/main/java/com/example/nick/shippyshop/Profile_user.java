@@ -6,6 +6,8 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.net.Uri;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -38,7 +40,6 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class Profile_user extends AppCompatActivity {
 
     private static final String KEY_IMAGE = "image", KEY_ID = "id";
-    public User_Picture user_pic;
     private TextView tv_username, tv_useremail, tv_usergender, tv_userphone, tv_useraddress;
     private CircleImageView iv_profile;
     public UserLocal localUser;
@@ -47,7 +48,7 @@ public class Profile_user extends AppCompatActivity {
     GalleryPhoto galleryPhoto;
     final int CAMERA_REQUEST =1, GALLERY_REQUEST =2;
     String selectedPhoto;
-    public static final String upload_image_url="http://192.168.1.2/shippyshop_server/dp_up.php" ;
+    public static final String upload_image_url="http://192.168.1.5/shippyshop_server/dp_up.php" ;
     private final String TAG = this.getClass().getName();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -162,6 +163,9 @@ public class Profile_user extends AppCompatActivity {
         StringRequest stringRequest = new StringRequest(Request.Method.POST, upload_image_url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
+                if (response.toString().equals("uploaded sucessfuly")){
+                    user.user_Pic=true;
+                }
                 Toast.makeText(Profile_user.this, response.toString(), Toast.LENGTH_LONG).show();
             }
         },
@@ -181,6 +185,12 @@ public class Profile_user extends AppCompatActivity {
         };
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         requestQueue.add(stringRequest);
+    }
+
+    @Override
+    public void onBackPressed() {
+        localUser.storeUserDetails(user);
+        super.onBackPressed();
     }
 
 }
